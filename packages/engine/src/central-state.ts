@@ -1,5 +1,7 @@
 import type {
+  PhysiologyState,
   RuleTraceEntry,
+  SimulationClockSnapshot,
   VariableDefinition,
   VariableId,
 } from "@motor-fisiologico/contracts";
@@ -8,6 +10,7 @@ export class CentralState {
   #definitions = new Map<VariableId, VariableDefinition>();
   #values = new Map<VariableId, number>();
   #trace: RuleTraceEntry[] = [];
+  #revision = 0;
 
   constructor(definitions: readonly VariableDefinition[] = []) {
     for (const definition of definitions) {
@@ -58,11 +61,29 @@ export class CentralState {
   }
 
   trace(): readonly RuleTraceEntry[] {
-    return [...this.#trace];
+    return this.#trace.map((entry) => ({ ...entry }));
   }
 
   resetValues(): void {
     this.#values.clear();
     this.#trace = [];
+  }
+
+  revise(): number {
+    this.#revision += 1;
+    return this.#revision;
+  }
+
+  resetRevision(): void {
+    this.#revision = 0;
+  }
+
+  snapshot(clock: SimulationClockSnapshot): PhysiologyState {
+    return {
+      revision: this.#revision,
+      clock: { ...clock },
+      variables: this.values(),
+      trace: this.trace(),
+    };
   }
 }

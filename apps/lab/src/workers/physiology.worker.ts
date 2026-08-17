@@ -6,7 +6,7 @@ import type {
   WorkerToUiMessage,
 } from "@motor-fisiologico/contracts";
 import { PhysiologyEngine } from "@motor-fisiologico/engine";
-import { toCanonical } from "@motor-fisiologico/scaling";
+import { getUnitDefinition, toCanonical } from "@motor-fisiologico/scaling";
 
 const scope = self as DedicatedWorkerGlobalScope;
 
@@ -114,6 +114,11 @@ function handleMessage(message: UiToWorkerMessage): void {
         throw new Error(`SET_PARAMETER cannot mutate ${definition.kind} variable ${message.variableId}`);
       }
       const normalized = toCanonical(message.value.value, message.value.unit);
+      if (definition.dimension !== undefined && getUnitDefinition(message.value.unit).dimension !== definition.dimension) {
+        throw new Error(
+          `Unit dimension mismatch for ${message.variableId}: expected ${definition.dimension}, received ${getUnitDefinition(message.value.unit).dimension}`,
+        );
+      }
       if (normalized.canonicalUnit !== definition.canonicalUnit) {
         throw new Error(
           `Unit mismatch for ${message.variableId}: expected ${definition.canonicalUnit}, received ${normalized.canonicalUnit}`,

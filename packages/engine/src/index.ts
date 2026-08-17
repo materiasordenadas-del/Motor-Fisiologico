@@ -16,7 +16,6 @@ export interface PhysiologyEngineOptions {
 export class PhysiologyEngine {
   readonly clock: SimulationClock;
   readonly state: CentralState;
-  #revision = 0;
 
   constructor(options: PhysiologyEngineOptions) {
     this.clock = new SimulationClock(options.fixedDtSeconds);
@@ -25,7 +24,7 @@ export class PhysiologyEngine {
 
   setCanonical(variableId: VariableId, value: number): PhysiologyState {
     this.state.setCanonical(variableId, value);
-    this.#revision += 1;
+    this.state.revise();
     return this.snapshot();
   }
 
@@ -35,30 +34,25 @@ export class PhysiologyEngine {
       this.state.setCanonical(variableId, value);
     }
     this.state.setTrace(resolution.trace);
-    this.#revision += 1;
+    this.state.revise();
     return this.snapshot();
   }
 
   step(dtSeconds: number = this.clock.fixedDtSeconds): PhysiologyState {
     this.clock.step(dtSeconds);
-    this.#revision += 1;
+    this.state.revise();
     return this.snapshot();
   }
 
   reset(): PhysiologyState {
     this.clock.reset();
-    this.#revision = 0;
     this.state.resetValues();
+    this.state.resetRevision();
     return this.snapshot();
   }
 
   snapshot(): PhysiologyState {
-    return {
-      revision: this.#revision,
-      clock: this.clock.snapshot(),
-      variables: this.state.values(),
-      trace: this.state.trace(),
-    };
+    return this.state.snapshot(this.clock.snapshot());
   }
 }
 
