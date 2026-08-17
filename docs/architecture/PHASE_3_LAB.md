@@ -27,16 +27,26 @@ pnpm install
 pnpm dev:lab
 ```
 
-Vite serves the LAB at port 5173 and provides HMR/Fast Refresh for React, CSS and visual code. Editing Worker/Engine code may recreate the Worker and reset the current sandbox state; correctness is preferred over attempting to preserve hot Worker state in V0.
+`pnpm dev:lab` performs an initial build of `contracts`, `scaling` and `engine`, then starts their TypeScript compilers in watch mode together with the Vite development server. The internal workspace packages are excluded from Vite dependency prebundling so updates are not frozen into an optimization cache.
+
+Vite serves the LAB at port 5173 and provides HMR/Fast Refresh for React, CSS and visual code. Changes in Engine/contracts/scaling rebuild their `dist` output through `tsc --watch`; the LAB consumes those linked workspace outputs. Editing Worker/Engine code may recreate the Worker and reset the current sandbox state. Correctness is preferred over preserving hot Worker state in V0.
 
 ## Phase 3 workspace
 
-The initial LAB contains four areas:
+The initial LAB contains four areas in the documented layout:
 
-1. **3D Anatomy** — R3F viewport, orbit controls and GLB/GLTF loading.
-2. **Causal / Integration Nodes** — React Flow surface. The default Phase 3 graph is technical topology only, not a physiological model.
-3. **Inspector** — authoritative Engine clock, revision, variables and Worker controls.
-4. **Events** — UI commands, Worker warnings/errors and Engine events.
+1. **3D Anatomy** — top-left; R3F viewport, orbit controls and GLB/GLTF loading.
+2. **Causal / Integration Nodes** — top-right; editable React Flow directed graph with cycles allowed.
+3. **Inspector** — bottom-left; authoritative Engine clock, revision, variables and Worker controls.
+4. **Graphs / Events** — bottom-right; UI commands, Worker warnings/errors and Engine events in Phase 3, with physiological plotting reserved for experiments that expose variables.
+
+React Flow is representation and editing only. It is not the physiological solver.
+
+## 3D and physics separation
+
+The visible GLB is not automatically used as a collision mesh. Rapier is initialized as an independent representation layer with its own fixed physics timestep. A later experiment can provide simplified colliders explicitly.
+
+There is no physics-to-Engine mutation callback in the Phase 3 sandbox.
 
 ## 3D asset workflow
 
@@ -68,6 +78,8 @@ which is served as:
 
 The public copy is a development-serving artifact; `assets/glb` remains the canonical repository location for exported models.
 
+Invalid GLB/GLTF loads are isolated to the viewport through an error boundary so the rest of the LAB remains usable.
+
 ## Experiment registry
 
 Experiments are registered under:
@@ -83,9 +95,10 @@ Phase 3 contains only `integration-sandbox-v0`. The glomerular filtration vertic
 - `pnpm install` resolves the updated lockfile.
 - `pnpm build` passes.
 - `pnpm test` passes.
-- `pnpm dev:lab` opens the four-panel LAB.
+- `pnpm dev:lab` opens the four-panel LAB from a clean checkout without a manual core build.
 - Worker reaches `READY` and Engine time changes through Play/Step.
-- GLB file loading works.
-- React Flow renders the registered topology.
+- GLB file loading works and a bad model does not crash the whole LAB.
+- React Flow supports node movement, edge editing and directed cycles.
 - Rapier initializes without any physics → physiology mutation path.
-- Vite HMR updates React/CSS/visual code without a manual full rebuild.
+- Editing React/CSS/visual code updates through Vite HMR.
+- Editing contracts/scaling/Engine code rebuilds automatically through the watch processes and becomes visible to the LAB without a manual full build.
