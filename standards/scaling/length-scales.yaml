@@ -1,0 +1,11 @@
+version: 0.1.0
+canonical_unit: m
+default_mapping:
+  type: power
+  equation: L_scene = clamp(L_scene_ref * (L_real / L_real_ref)^alpha, L_scene_min, L_scene_max)
+  constraints:
+    alpha: "0 < alpha <= 1"
+    monotonic: true
+policy:
+  visual_size_is_not_physiological_size: true
+  manual_exceptions_require_justification: true
