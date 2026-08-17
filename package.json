@@ -7,7 +7,7 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
-    "check": "pnpm typecheck && pnpm test"
+    "check": "pnpm build && pnpm test"
   },
   "devDependencies": {
     "typescript": "7.0.2",
