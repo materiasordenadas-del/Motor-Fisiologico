@@ -211,7 +211,8 @@ export type UiToWorkerMessage =
   | { type: "SET_TREATMENT"; treatmentId: string; enabled: boolean }
   | { type: "SET_SPEED"; multiplier: number }
   | { type: "RESET" }
-  | { type: "LOAD_SCENARIO"; scenarioId: string };
+  | { type: "LOAD_SCENARIO"; scenarioId: string }
+  | { type: "PHYSICS_EVENT"; event: SimulationEvent };
 
 export type WorkerToUiMessage =
   | { type: "READY"; state: PhysiologyState }
