@@ -1,0 +1,51 @@
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+
+.panel-action {
+  min-height: 28px;
+  border: 1px solid #2c3a50;
+  border-radius: 7px;
+  padding: 4px 8px;
+  color: #dce5f5;
+  background: #151d2a;
+  cursor: pointer;
+}
+
+.panel-action:hover {
+  background: #1c2737;
+}
+
+.viewport-error {
+  height: 100%;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #c9d5e7;
+  background: #0c111a;
+}
+
+.viewport-error strong {
+  font-size: 13px;
+}
+
+.viewport-error code {
+  max-width: min(680px, 90%);
+  overflow-wrap: anywhere;
+  color: #ef9c9c;
+  font-size: 11px;
+}
+
+.viewport-error span {
+  color: #7f8ea6;
+  font-size: 11px;
+}
