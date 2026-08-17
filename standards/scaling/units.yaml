@@ -9,6 +9,9 @@ canonical_units:
   mass: kg
   amount: mol
   pressure: Pa
+  amount_concentration: mol/m3
+  mass_concentration: kg/m3
+  osmolality: Osm/kg
   dimensionless: "1"
 policy:
   normalize_before_engine_math: true
