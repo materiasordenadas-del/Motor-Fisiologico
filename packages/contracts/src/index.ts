@@ -3,6 +3,20 @@ export type EntityId = string;
 export type ModelId = string;
 export type SourceId = string;
 
+export type UnitDimension =
+  | "length"
+  | "area"
+  | "volume"
+  | "time"
+  | "flow"
+  | "mass"
+  | "amount"
+  | "pressure"
+  | "amount_concentration"
+  | "mass_concentration"
+  | "osmolality"
+  | "dimensionless";
+
 export interface SourceReference {
   id: SourceId;
   title: string;
@@ -23,6 +37,7 @@ export interface VariableDefinition {
   name: string;
   kind: "state" | "calculated" | "parameter" | "input" | "output";
   canonicalUnit: string;
+  dimension?: UnitDimension;
   displayUnit?: string;
   description?: string;
   normalRange?: {
@@ -57,6 +72,19 @@ export const RULE_PRECEDENCE: readonly RuleLayer[] = [
   "constraint",
   "result",
 ] as const;
+
+export type RuleOperationKind = "set" | "add" | "multiply" | "clamp";
+
+export interface RuleOperation {
+  id: string;
+  layer: RuleLayer;
+  target: VariableId;
+  operation: RuleOperationKind;
+  value?: number;
+  min?: number;
+  max?: number;
+  note?: string;
+}
 
 export interface RuleTraceEntry {
   layer: RuleLayer;
@@ -166,7 +194,15 @@ export interface ScaleProfile {
   version: string;
 }
 
+export interface WorkerInitConfig {
+  fixedDtSeconds: number;
+  schedulerHz?: number;
+  snapshotEverySteps?: number;
+  variableDefinitions?: readonly VariableDefinition[];
+}
+
 export type UiToWorkerMessage =
+  | { type: "INIT"; config: WorkerInitConfig }
   | { type: "PLAY" }
   | { type: "PAUSE" }
   | { type: "STEP"; dtSeconds?: number }
@@ -183,3 +219,22 @@ export type WorkerToUiMessage =
   | { type: "SIMULATION_EVENT"; event: SimulationEvent }
   | { type: "WARNING"; code: string; message: string }
   | { type: "ERROR"; code: string; message: string };
+
+export interface ConformanceTolerance {
+  absolute: number;
+  relative: number;
+}
+
+export interface ConformanceFailure {
+  index: number;
+  reference: number;
+  actual: number;
+  absoluteError: number;
+  allowedError: number;
+}
+
+export interface ConformanceResult {
+  passed: boolean;
+  compared: number;
+  failures: readonly ConformanceFailure[];
+}

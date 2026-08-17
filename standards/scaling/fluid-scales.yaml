@@ -1,0 +1,14 @@
+version: 0.1.0
+canonical_units:
+  volume: m3
+  flow: m3/s
+volume_mapping:
+  equation: V_scene = clamp(V_scene_ref * (V_real / V_real_ref)^beta, V_scene_min, V_scene_max)
+  beta: "0 < beta <= 1"
+flow_mapping:
+  equation: v_scene = clamp(v_scene_ref * (Q_real / Q_real_ref)^gamma, v_scene_min, v_scene_max)
+  gamma: "0 < gamma <= 1"
+policy:
+  visual_particles_are_representative: true
+  representation_factor_must_be_explicit: true
+  visual_particle_count_never_defines_mass_balance: true

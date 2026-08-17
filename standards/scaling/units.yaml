@@ -1,0 +1,20 @@
+version: 0.1.0
+executable_registry: packages/scaling/src/unit-registry.ts
+canonical_units:
+  length: m
+  area: m2
+  volume: m3
+  time: s
+  flow: m3/s
+  mass: kg
+  amount: mol
+  pressure: Pa
+  amount_concentration: mol/m3
+  mass_concentration: kg/m3
+  osmolality: Osm/kg
+  dimensionless: "1"
+policy:
+  normalize_before_engine_math: true
+  preserve_original_unit_as_metadata: true
+  reject_dimension_mismatch: true
+  silent_unit_overrides: false

@@ -1,0 +1,14 @@
+referenceModel: ""
+referenceVersion: ""
+PhysiolibraryVersion: ""
+OpenModelicaVersion: ""
+solver: ""
+solverTolerance: null
+timeStep: null
+parameters: {}
+initialConditions: {}
+inputDataset: inputs.csv
+outputDataset: outputs.csv
+generatedAt: ""
+sourceReferences: []
+notes: ""

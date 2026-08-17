@@ -1,0 +1,16 @@
+id: ""
+name: ""
+scope:
+  id: ""
+  domain: ""
+  appliesTo: "*"
+  preconditions: []
+  exceptionsAllowed: false
+inputs: []
+outputs: []
+equationId: null
+defaultParameters: {}
+constraints: []
+sources: []
+sourceVersion: null
+status: draft

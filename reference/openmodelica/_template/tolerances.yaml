@@ -1,0 +1,6 @@
+version: 0.1.0
+default:
+  absolute: 0.0
+  relative: 0.0
+overrides: {}
+notes: "Set scientifically justified tolerances before marking a model validated."
