@@ -42,7 +42,7 @@ export function AnatomyPanel() {
           Open GLB
           <input
             type="file"
-            accept=".glb,.gltf,model/gltf-binary,model/gltf+json"
+            accept=".glb,model/gltf-binary"
             onChange={(event) => loadFile(event.target.files?.[0])}
           />
         </label>
@@ -50,8 +50,8 @@ export function AnatomyPanel() {
           className="model-url-input"
           value={manualUrl}
           onChange={(event) => setManualUrl(event.target.value)}
-          placeholder="/models/example.glb or URL"
-          aria-label="GLB URL"
+          placeholder="/models/example.glb, .gltf URL, or remote URL"
+          aria-label="GLB or GLTF URL"
         />
         <button type="button" onClick={loadManualUrl}>Load URL</button>
       </div>
