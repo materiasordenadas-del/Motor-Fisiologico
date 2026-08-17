@@ -14,17 +14,16 @@ import {
 } from "@motor-fisiologico/engine";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import type { PhysiologyWorkerController } from "../../engine/usePhysiologyWorker.js";
-
-interface DecisionView {
-  eventId: string;
-  canPass: boolean;
-}
+import {
+  toGlomerularRepresentationDecision,
+  type GlomerularRepresentationDecision,
+} from "./representation.js";
 
 interface ParticleBodyProps {
   particleId: string;
   y: number;
   radius: number;
-  decision?: DecisionView;
+  decision?: GlomerularRepresentationDecision;
   resetKey: number;
   kind: "small" | "rbc";
 }
@@ -82,14 +81,10 @@ interface GlomerularWorldProps {
 function GlomerularWorld({ controller, resetKey }: GlomerularWorldProps) {
   const integrity = controller.state?.variables[GLOMERULAR_VARIABLE_IDS.integrity] ?? 1;
   const latestDecisions = useMemo(() => {
-    const result = new Map<string, DecisionView>();
+    const result = new Map<string, GlomerularRepresentationDecision>();
     for (const event of controller.simulationEvents) {
-      if (event.type !== "glomerular_filter_decision") continue;
-      const particleId = event.payload?.particleId;
-      const canPass = event.payload?.canPass;
-      if (typeof particleId === "string" && typeof canPass === "boolean") {
-        result.set(particleId, { eventId: event.id, canPass });
-      }
+      const decision = toGlomerularRepresentationDecision(event);
+      if (decision) result.set(decision.particleId, decision);
     }
     return result;
   }, [controller.simulationEvents]);
