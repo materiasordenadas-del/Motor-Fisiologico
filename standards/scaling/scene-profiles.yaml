@@ -1,0 +1,19 @@
+version: 0.1.0
+profiles:
+  - id: molecular-v1
+    status: parameterization_pending
+  - id: cellular-v1
+    status: parameterization_pending
+  - id: glomerular-v1
+    status: parameterization_pending
+  - id: nephron-v1
+    status: parameterization_pending
+  - id: organ-v1
+    status: parameterization_pending
+  - id: whole-body-v1
+    status: parameterization_pending
+  - id: mixed-teaching-v1
+    status: parameterization_pending
+policy:
+  physiological_values_do_not_change_between_profiles: true
+  profile_parameters_require_versioning: true
