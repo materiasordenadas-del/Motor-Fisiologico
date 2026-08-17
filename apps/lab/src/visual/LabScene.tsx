@@ -1,4 +1,4 @@
-import { Center, OrbitControls, useGLTF } from "@react-three/drei";
+import { Bounds, Center, OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { Suspense, useMemo } from "react";
@@ -30,17 +30,18 @@ export function LabScene({ modelUrl }: LabSceneProps) {
       <directionalLight position={[-4, 2, -3]} intensity={0.8} />
 
       <Suspense fallback={null}>
-        <Center>{modelUrl ? <GltfModel url={modelUrl} /> : <EmptySceneMarker />}</Center>
+        <Bounds fit clip observe margin={1.15}>
+          <Center>{modelUrl ? <GltfModel url={modelUrl} /> : <EmptySceneMarker />}</Center>
+        </Bounds>
+
+        <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60}>
+          <RigidBody type="fixed" colliders={false}>
+            <CuboidCollider args={[5, 0.05, 5]} position={[0, -1.25, 0]} />
+          </RigidBody>
+        </Physics>
       </Suspense>
 
       <gridHelper args={[10, 20]} position={[0, -1.2, 0]} />
-
-      <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60}>
-        <RigidBody type="fixed" colliders={false}>
-          <CuboidCollider args={[5, 0.05, 5]} position={[0, -1.25, 0]} />
-        </RigidBody>
-      </Physics>
-
       <OrbitControls makeDefault enableDamping />
     </Canvas>
   );
