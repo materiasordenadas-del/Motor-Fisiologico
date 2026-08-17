@@ -4,13 +4,29 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "dev": "vite",
+    "build": "tsc -p tsconfig.json && vite build",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@motor-fisiologico/contracts": "workspace:*",
     "@motor-fisiologico/engine": "workspace:*",
-    "@motor-fisiologico/scaling": "workspace:*"
+    "@motor-fisiologico/scaling": "workspace:*",
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.7.0",
+    "@react-three/rapier": "2.2.0",
+    "@xyflow/react": "12.11.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@types/three": "0.185.1",
+    "@vitejs/plugin-react": "6.0.4",
+    "vite": "8.2.0"
   }
 }
