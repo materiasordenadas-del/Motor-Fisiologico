@@ -57,6 +57,20 @@ const DEFINITIONS: readonly UnitDefinition[] = [
   { symbol: "Pa", dimension: "pressure", canonicalUnit: "Pa", toCanonicalFactor: 1 },
   { symbol: "kPa", dimension: "pressure", canonicalUnit: "Pa", toCanonicalFactor: 1e3 },
   { symbol: "mmHg", dimension: "pressure", canonicalUnit: "Pa", toCanonicalFactor: 133.322387415 },
+
+  { symbol: "mol/m3", dimension: "amount_concentration", canonicalUnit: "mol/m3", toCanonicalFactor: 1 },
+  { symbol: "mol/L", dimension: "amount_concentration", canonicalUnit: "mol/m3", toCanonicalFactor: 1e3 },
+  { symbol: "mmol/L", dimension: "amount_concentration", canonicalUnit: "mol/m3", toCanonicalFactor: 1 },
+  { symbol: "umol/L", dimension: "amount_concentration", canonicalUnit: "mol/m3", toCanonicalFactor: 1e-3 },
+  { symbol: "µmol/L", dimension: "amount_concentration", canonicalUnit: "mol/m3", toCanonicalFactor: 1e-3 },
+
+  { symbol: "kg/m3", dimension: "mass_concentration", canonicalUnit: "kg/m3", toCanonicalFactor: 1 },
+  { symbol: "g/L", dimension: "mass_concentration", canonicalUnit: "kg/m3", toCanonicalFactor: 1 },
+  { symbol: "mg/L", dimension: "mass_concentration", canonicalUnit: "kg/m3", toCanonicalFactor: 1e-3 },
+  { symbol: "mg/dL", dimension: "mass_concentration", canonicalUnit: "kg/m3", toCanonicalFactor: 1e-2 },
+
+  { symbol: "Osm/kg", dimension: "osmolality", canonicalUnit: "Osm/kg", toCanonicalFactor: 1 },
+  { symbol: "mOsm/kg", dimension: "osmolality", canonicalUnit: "Osm/kg", toCanonicalFactor: 1e-3 },
 ] as const;
 
 const BY_SYMBOL = new Map(DEFINITIONS.map((definition) => [definition.symbol, definition] as const));
