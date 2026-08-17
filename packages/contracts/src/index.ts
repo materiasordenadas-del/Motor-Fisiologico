@@ -12,6 +12,9 @@ export type UnitDimension =
   | "mass"
   | "amount"
   | "pressure"
+  | "amount_concentration"
+  | "mass_concentration"
+  | "osmolality"
   | "dimensionless";
 
 export interface SourceReference {
