@@ -1,8 +1,14 @@
-import type { PhysiologyState, UiToWorkerMessage, WorkerToUiMessage } from "@motor-fisiologico/contracts";
+import type {
+  PhysiologyState,
+  SimulationEvent,
+  UiToWorkerMessage,
+  WorkerToUiMessage,
+} from "@motor-fisiologico/contracts";
+import { toCanonical } from "@motor-fisiologico/scaling";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export type LabLogLevel = "info" | "warning" | "error";
-export type LabLogSource = "ui" | "worker" | "engine";
+export type LabLogSource = "ui" | "worker" | "engine" | "physics";
 
 export interface LabLogEntry {
   id: string;
@@ -19,14 +25,19 @@ export interface PhysiologyWorkerController {
   speedMultiplier: number;
   state: PhysiologyState | null;
   logs: readonly LabLogEntry[];
+  simulationEvents: readonly SimulationEvent[];
   play: () => void;
   pause: () => void;
   step: () => void;
   reset: () => void;
   setSpeed: (multiplier: number) => void;
+  loadScenario: (scenarioId: string) => void;
+  setParameter: (variableId: string, value: number, unit?: string) => void;
+  emitPhysicsEvent: (type: string, payload: Readonly<Record<string, unknown>>) => void;
 }
 
 const MAX_LOG_ENTRIES = 200;
+const MAX_SIMULATION_EVENTS = 100;
 
 export function usePhysiologyWorker(): PhysiologyWorkerController {
   const workerRef = useRef<Worker | null>(null);
@@ -36,6 +47,7 @@ export function usePhysiologyWorker(): PhysiologyWorkerController {
   const [speedMultiplier, setSpeedMultiplier] = useState(1);
   const [state, setState] = useState<PhysiologyState | null>(null);
   const [logs, setLogs] = useState<LabLogEntry[]>([]);
+  const [simulationEvents, setSimulationEvents] = useState<SimulationEvent[]>([]);
 
   const appendLog = useCallback((level: LabLogLevel, source: LabLogSource, message: string) => {
     const simulationTimeSeconds = stateRef.current?.clock.simulationTimeSeconds;
@@ -58,7 +70,7 @@ export function usePhysiologyWorker(): PhysiologyWorkerController {
         return;
       }
       worker.postMessage(message);
-      appendLog("info", "ui", message.type);
+      appendLog(message.type === "PHYSICS_EVENT" ? "info" : "info", message.type === "PHYSICS_EVENT" ? "physics" : "ui", message.type);
     },
     [appendLog],
   );
@@ -84,6 +96,10 @@ export function usePhysiologyWorker(): PhysiologyWorkerController {
           setState(message.state);
           return;
         case "SIMULATION_EVENT":
+          setSimulationEvents((current) => [
+            ...current.slice(-(MAX_SIMULATION_EVENTS - 1)),
+            message.event,
+          ]);
           appendLog("info", "engine", message.event.type);
           return;
         case "WARNING":
@@ -148,16 +164,55 @@ export function usePhysiologyWorker(): PhysiologyWorkerController {
     [post],
   );
 
+  const loadScenario = useCallback(
+    (scenarioId: string) => {
+      post({ type: "LOAD_SCENARIO", scenarioId });
+      setIsPlaying(false);
+      setSimulationEvents([]);
+    },
+    [post],
+  );
+
+  const setParameter = useCallback(
+    (variableId: string, value: number, unit = "1") => {
+      post({
+        type: "SET_PARAMETER",
+        variableId,
+        value: toCanonical(value, unit),
+      });
+    },
+    [post],
+  );
+
+  const emitPhysicsEvent = useCallback(
+    (type: string, payload: Readonly<Record<string, unknown>>) => {
+      const simulationTimeSeconds = stateRef.current?.clock.simulationTimeSeconds ?? 0;
+      const event: SimulationEvent = {
+        id: `physics:${crypto.randomUUID()}`,
+        type,
+        source: "physics",
+        simulationTimeSeconds,
+        payload,
+      };
+      post({ type: "PHYSICS_EVENT", event });
+    },
+    [post],
+  );
+
   return {
     ready,
     isPlaying,
     speedMultiplier,
     state,
     logs,
+    simulationEvents,
     play,
     pause,
     step,
     reset,
     setSpeed,
+    loadScenario,
+    setParameter,
+    emitPhysicsEvent,
   };
 }
