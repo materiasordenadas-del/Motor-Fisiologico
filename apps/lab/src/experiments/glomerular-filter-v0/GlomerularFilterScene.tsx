@@ -23,7 +23,7 @@ interface ParticleBodyProps {
   particleId: string;
   y: number;
   radius: number;
-  decision?: GlomerularRepresentationDecision;
+  decision: GlomerularRepresentationDecision | undefined;
   resetKey: number;
   kind: "small" | "rbc";
 }
