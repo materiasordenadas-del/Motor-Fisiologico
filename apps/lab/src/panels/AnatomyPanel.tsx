@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { LabScene } from "../visual/LabScene.js";
+import { ViewportErrorBoundary } from "../visual/ViewportErrorBoundary.js";
 
 export function AnatomyPanel() {
   const [modelUrl, setModelUrl] = useState<string | null>(null);
@@ -56,7 +57,9 @@ export function AnatomyPanel() {
       </div>
 
       <div className="viewport-shell">
-        <LabScene modelUrl={modelUrl} />
+        <ViewportErrorBoundary key={modelUrl ?? "empty-scene"}>
+          <LabScene modelUrl={modelUrl} />
+        </ViewportErrorBoundary>
       </div>
     </section>
   );
