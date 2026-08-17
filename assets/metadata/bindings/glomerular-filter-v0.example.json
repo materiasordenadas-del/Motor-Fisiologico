@@ -1,0 +1,24 @@
+{
+  "assetId": "renal.glomerulus.example",
+  "runtimeGlb": "assets/glb/renal/glomerulus/glomerulus.glb",
+  "status": "example_only_no_asset_committed",
+  "bindings": [
+    {
+      "id": "binding.gfb.integrity.material",
+      "variableId": "renal.glomerular_barrier.integrity",
+      "anatomyObjectId": "renal.glomerulus.gfb",
+      "transform": "material"
+    },
+    {
+      "id": "binding.gfb.cutoff.custom",
+      "variableId": "renal.glomerular_barrier.effective_cutoff",
+      "anatomyObjectId": "renal.glomerulus.gfb",
+      "transform": "custom"
+    }
+  ],
+  "rules": [
+    "Bindings are Engine state -> visual representation only.",
+    "The GLB must never determine integrity, cutoff, permeability or PASS/BLOCK.",
+    "Visual and collision meshes may be different assets."
+  ]
+}
