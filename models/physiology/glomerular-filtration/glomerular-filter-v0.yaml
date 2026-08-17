@@ -1,0 +1,54 @@
+id: physiology.glomerular-filtration.v0
+status: experimental_didactic
+scope: lab_vertical_slice_only
+engine_module: packages/engine/src/glomerular-filter-v0.ts
+
+purpose: >
+  Exercise the complete Engine -> Central State/Event -> Physics -> Visual pipeline.
+  This V0 is not a validated quantitative model of the glomerular filtration barrier.
+
+barrier:
+  integrity:
+    range: [0, 1]
+    baseline: 1
+  base_cutoff_filter_units: 7
+  damage_cutoff_gain_filter_units: 10
+  effective_cutoff_rule: "baseCutoff + (1 - integrity) * damageCutoffGain"
+  permeability_index_rule: "1 - integrity"
+
+particles:
+  small_particle:
+    id: glomerular.small-particle
+    filter_size_filter_units: 2
+    representation_factor: "1 visual object = 1 decision event in this LAB experiment"
+  erythrocyte:
+    id: glomerular.rbc
+    filter_size_filter_units: 12
+    representation_factor: "1 visual object = 1 decision event in this LAB experiment"
+
+v0_decision_rule: "particle.filterSize <= barrier.effectiveCutoff"
+
+required_baseline_behavior:
+  intact_barrier:
+    integrity: 1
+    small_particle: PASS
+    erythrocyte: BLOCK
+  damaged_demo:
+    integrity: 0.4
+    effective_cutoff_filter_units: 13
+    small_particle: PASS
+    erythrocyte: PASS
+
+limitations:
+  - filter units are dimensionless pedagogical units, not pore diameters
+  - permeability is a normalized teaching index, not a measured permeability coefficient
+  - erythrocyte leakage is temporarily evaluated by the V0 cutoff abstraction
+  - future versions must separate macromolecule permeability from RBC structural leak probability
+  - this experiment must not be used as a clinical prediction model
+
+architecture_source:
+  document: MOTOR_FISIOLOGICO_DECISIONES_CONSOLIDADAS_V0_2.md
+  sections:
+    - "23. Filtración glomerular — primer vertical slice"
+    - "24. Flujo de decisión para una partícula"
+    - "16. Physics Non-Authority Principle"
