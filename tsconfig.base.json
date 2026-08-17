@@ -4,11 +4,6 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "lib": ["ES2024", "DOM", "WebWorker"],
-    "baseUrl": ".",
-    "paths": {
-      "@motor-fisiologico/contracts": ["packages/contracts/src/index.ts"],
-      "@motor-fisiologico/engine": ["packages/engine/src/index.ts"]
-    },
     "strict": true,
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
