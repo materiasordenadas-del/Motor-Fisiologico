@@ -142,6 +142,15 @@ function setParameter(message: Extract<UiToWorkerMessage, { type: "SET_PARAMETER
     throw new Error(`SET_PARAMETER cannot mutate ${definition.kind} variable ${message.variableId}`);
   }
 
+  if (
+    activeScenarioId === GLOMERULAR_FILTER_V0_ID
+    && message.variableId !== GLOMERULAR_VARIABLE_IDS.integrity
+  ) {
+    throw new Error(
+      `Glomerular Filter V0 exposes only ${GLOMERULAR_VARIABLE_IDS.integrity} as a mutable UI parameter.`,
+    );
+  }
+
   const unitDefinition = getUnitDefinition(message.value.unit);
   const normalized = toCanonical(message.value.value, message.value.unit);
   if (definition.dimension !== undefined && unitDefinition.dimension !== definition.dimension) {
@@ -155,7 +164,7 @@ function setParameter(message: Extract<UiToWorkerMessage, { type: "SET_PARAMETER
     );
   }
 
-  if (activeScenarioId === GLOMERULAR_FILTER_V0_ID && message.variableId === GLOMERULAR_VARIABLE_IDS.integrity) {
+  if (activeScenarioId === GLOMERULAR_FILTER_V0_ID) {
     const state = setGlomerularBarrierIntegrityV0(activeEngine, normalized.canonicalValue);
     post({ type: "STATE_SNAPSHOT", state });
     return;
