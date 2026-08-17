@@ -1,0 +1,16 @@
+{
+  "name": "@motor-fisiologico/lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@motor-fisiologico/contracts": "workspace:*",
+    "@motor-fisiologico/engine": "workspace:*",
+    "@motor-fisiologico/scaling": "workspace:*"
+  }
+}
