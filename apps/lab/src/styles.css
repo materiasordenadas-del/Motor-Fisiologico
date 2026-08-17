@@ -51,7 +51,7 @@ button { color: inherit; }
   grid-template-rows: minmax(0, 1.55fr) minmax(230px, 0.72fr);
   grid-template-areas:
     "anatomy graph"
-    "events inspector";
+    "inspector events";
   gap: 10px;
 }
 
