@@ -9,6 +9,12 @@ describe("Unit Registry", () => {
     expect(value.canonicalValue).toBeCloseTo(2e-6, 12);
   });
 
+  it("supports renal clinical concentration units", () => {
+    expect(toCanonical(140, "mmol/L").canonicalValue).toBe(140);
+    expect(toCanonical(1, "mg/dL").canonicalValue).toBeCloseTo(0.01, 12);
+    expect(toCanonical(300, "mOsm/kg").canonicalValue).toBeCloseTo(0.3, 12);
+  });
+
   it("converts compatible units and rejects incompatible dimensions", () => {
     expect(convert(7.5, "um", "m")).toBeCloseTo(7.5e-6, 14);
     expect(() => convert(1, "mmHg", "mL")).toThrow(/Incompatible unit dimensions/);
