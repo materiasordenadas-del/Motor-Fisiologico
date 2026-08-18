@@ -7,12 +7,18 @@ describe("LAB experiment registry", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("does not create a physics-to-engine authority edge", () => {
+  it("never allows physics to write physiological state directly", () => {
     for (const experiment of LAB_EXPERIMENTS) {
-      const forbidden = experiment.graphEdges.some(
-        (edge) => edge.source === "physics" && edge.target === "engine",
-      );
-      expect(forbidden).toBe(false);
+      const nodeLayers = new Map(experiment.graphNodes.map((node) => [node.id, node.data.layer] as const));
+      for (const edge of experiment.graphEdges) {
+        expect(edge.data?.directPhysiologyWrite).not.toBe(true);
+
+        const fromPhysics = nodeLayers.get(edge.source) === "physics";
+        const toEngine = nodeLayers.get(edge.target) === "engine";
+        if (fromPhysics && toEngine) {
+          expect(edge.data?.channel).toBe("physics_event_request");
+        }
+      }
     }
   });
 });

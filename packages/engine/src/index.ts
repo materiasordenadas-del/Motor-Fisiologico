@@ -58,5 +58,24 @@ export class PhysiologyEngine {
 
 export { CentralState } from "./central-state.js";
 export { compareNumericSeries } from "./conformance.js";
+export {
+  GLOMERULAR_BARRIER_ID,
+  GLOMERULAR_FILTER_V0_CALIBRATION,
+  GLOMERULAR_FILTER_V0_ID,
+  GLOMERULAR_FILTER_V0_VARIABLE_DEFINITIONS,
+  GLOMERULAR_PARTICLES,
+  GLOMERULAR_SENSOR_ID,
+  GLOMERULAR_VARIABLE_IDS,
+  currentGlomerularBarrierV0,
+  deriveGlomerularBarrierV0,
+  evaluateGlomerularParticleFromStateV0,
+  evaluateGlomerularParticleV0,
+  handleGlomerularPhysicsEventV0,
+  initializeGlomerularFilterV0,
+  setGlomerularBarrierIntegrityV0,
+  type GlomerularBarrierDerivedState,
+  type GlomerularEnginePort,
+  type GlomerularFiltrationDecision,
+} from "./glomerular-filter-v0.js";
 export { resolveRuleOperations, type RuleResolution } from "./rule-resolver.js";
 export { SimulationClock } from "./simulation-clock.js";

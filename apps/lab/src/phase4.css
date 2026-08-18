@@ -1,0 +1,76 @@
+.experiment-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.experiment-picker label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7f8ea6;
+}
+
+.experiment-picker select {
+  min-height: 32px;
+  border: 1px solid #2c3a50;
+  border-radius: 7px;
+  padding: 5px 9px;
+  color: #dce5f5;
+  background: #0f151f;
+}
+
+.glomerular-toolbar {
+  grid-template-columns: auto 1fr 1fr;
+  align-items: center;
+}
+
+.decision-chip {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #27364a;
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #b7c4d8;
+  background: #0c111a;
+}
+
+.integrity-control {
+  padding: 10px;
+  border-top: 1px solid #1d2635;
+  border-bottom: 1px solid #1d2635;
+  background: #0d131d;
+}
+
+.integrity-control input[type="range"] {
+  width: 100%;
+  accent-color: #8da2c7;
+}
+
+.integrity-scale {
+  display: flex;
+  justify-content: space-between;
+  margin: 3px 1px 7px;
+  font-size: 9px;
+  color: #71819a;
+}
+
+@media (max-width: 980px) {
+  .lab-header {
+    flex-wrap: wrap;
+  }
+  .experiment-picker {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+  .experiment-picker select {
+    flex: 1;
+  }
+}
