@@ -41,7 +41,7 @@ function ParticleBody({ particleId, y, radius, decision, resetKey, kind }: Parti
   useEffect(() => {
     const body = bodyRef.current;
     if (!body || !decision?.canPass) return;
-    body.setTranslation({ x: 0.18, y, z: 0 }, true);
+    body.setTranslation({ x: radius + 0.06, y, z: 0 }, true);
     body.setLinvel({ x: 1.15, y: 0, z: 0 }, true);
   }, [decision?.canPass, decision?.eventId, y]);
 
